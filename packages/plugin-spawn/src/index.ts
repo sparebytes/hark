@@ -129,7 +129,9 @@ export const spawn = <I>(cli: string[] | string, userOptions?: HarkSpawnOptions)
     }),
   );
 
-export type HarkSpawnExecaSyncOptions = import("execa").SyncOptions;
+export type HarkSpawnExecaSyncOptions = import("execa").SyncOptions & {
+  logCommand?: boolean;
+};
 
 spawn.sync = <I>(cli: string[] | string, userExecaOptions?: HarkSpawnExecaSyncOptions) =>
   plugin(
@@ -140,7 +142,10 @@ spawn.sync = <I>(cli: string[] | string, userExecaOptions?: HarkSpawnExecaSyncOp
         ...(userExecaOptions?.stdio == null ? { stderr: "inherit", stdout: "inherit" } : {}),
         ...userExecaOptions,
       };
-      return plugin.switchMap(async (state: I) => {
+      const logCommand = options.logCommand ?? true;
+      delete options.logCommand;
+      return plugin.switchMap(async (state: I, { logMessage }) => {
+        if (logCommand) logMessage("$", cli);
         if (typeof cli === "string") {
           return execa.commandSync(cli, options);
         } else {

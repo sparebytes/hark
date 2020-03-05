@@ -1,6 +1,6 @@
 {
   "name": "@hark/plugin-rename",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "🔠 Rename files",
   "keywords": "tasks, runner, hark, hark-plugin",
   "license": "MIT",
@@ -8,7 +8,7 @@
   "main": "src/index.ts",
   "dependencies": {
     "@babel/runtime": "^7.8.4",
-    "@hark/plugin": "^0.9.0"
+    "@hark/plugin": "^0.9.1"
   },
   "peerDependencies": {
     "rxjs": ">=6"

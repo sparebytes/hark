@@ -1,6 +1,6 @@
 {
   "name": "@hark/plugin",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "⚙️ HarkPlugin creator",
   "keywords": "tasks, runner, hark, hark-plugin",
   "license": "MIT",
@@ -10,7 +10,7 @@
     "@babel/runtime": "^7.8.4"
   },
   "devDependencies": {
-    "@hark/reporter-verbose": "^0.9.0"
+    "@hark/reporter-verbose": "^0.9.1"
   },
   "peerDependencies": {
     "rxjs": ">=6"

@@ -110,23 +110,31 @@ export default extendCli<HarkMonorepoCommandContext<MyMonorepo>, HarkMonorepoCom
       @Command.String({ required: true })
       lernaVersionBump: string = "BUMP";
 
+      @Command.Boolean("--yes")
+      yes: boolean = false;
+
       @Command.Rest()
       lernaVersionArgs: string[] = [];
 
       @Command.Path("publish")
       async execute() {
+        const yesArgs = this.yes ? ["--yes"] : [];
         await this.makeMonorepo$({ watchMode: false, release: true })
           .pipe(
             plugin.switchMake((theMonorepo) =>
               plugin.pipe(
-                spawn(["yarn", "test", "--silent"]),
+                spawn.sync(["yarn", "test", "--silent"]),
                 last(),
                 this.lernaVersionBump === "from-package"
                   ? plugin.of(null)
-                  : spawn(["lerna", "version", this.lernaVersionBump, "--yes", ...this.lernaVersionArgs]),
+                  : spawn.sync(["lerna", "version", this.lernaVersionBump, ...yesArgs, ...this.lernaVersionArgs], {
+                      stdio: "inherit",
+                    }),
                 last(),
                 theMonorepo.getProject("root").getTask("prepare"),
-                spawn(["lerna", "publish", "from-package", "--contents", "dist", "--yes"]),
+                spawn.sync(["lerna", "publish", "from-package", "--contents", "dist", ...yesArgs], {
+                  stdio: "inherit",
+                }),
                 last(),
               ),
             ),

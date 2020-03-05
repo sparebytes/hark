@@ -1,4 +1,4 @@
-import { plugin } from "@hark/plugin";
+import { plugin, HarkPluginsArrayFrom, HarkPlugin } from "@hark/plugin";
 import { Observable } from "rxjs";
 import { filter } from "rxjs/operators";
 import { Writable } from "stream";
@@ -21,7 +21,7 @@ export interface SpawnEventStderr {
 }
 export type SpawnEvent = SpawnEventBegin | SpawnEventClose | SpawnEventStdout | SpawnEventStderr;
 
-export type HarkSpawnExecOptions = import("execa").Options;
+export type HarkSpawnExecaOptions = import("execa").Options;
 export type HarkSpawnChildProcess = import("execa").ExecaChildProcess;
 export interface HarkSpawnOptions {
   logCommand?: boolean;
@@ -30,14 +30,14 @@ export interface HarkSpawnOptions {
   logStdout?: boolean | "auto";
   logStderr?: boolean | "auto";
   stringifyStdio?: boolean;
-  execa?: Partial<HarkSpawnExecOptions>;
+  execa?: Partial<HarkSpawnExecaOptions>;
 }
 
 function throwFn(error: any): never {
   throw error;
 }
 
-export const spawn = <I>(cli: string[] | string, userOptions?: HarkSpawnOptions) =>
+export const spawn = <I>(cli: string[] | string, userOptions?: HarkSpawnOptions): HarkPlugin<I, SpawnEvent> =>
   plugin(
     "spawn",
     plugin.init(async () => {
@@ -88,7 +88,7 @@ export const spawn = <I>(cli: string[] | string, userOptions?: HarkSpawnOptions)
             stderrProxy(chunk);
             subscriber.next({ kind: "stdout", message: chunk });
           };
-          const execaOptions: HarkSpawnExecOptions = {
+          const execaOptions: HarkSpawnExecaOptions = {
             stripFinalNewline: false,
             env: {
               FORCE_COLOR: "1",
@@ -125,6 +125,28 @@ export const spawn = <I>(cli: string[] | string, userOptions?: HarkSpawnOptions)
           };
         });
         return harkSpawnEvents$.pipe(filter(eventFilter));
+      });
+    }),
+  );
+
+export type HarkSpawnExecaSyncOptions = import("execa").SyncOptions;
+
+spawn.sync = <I>(cli: string[] | string, userExecaOptions?: HarkSpawnExecaSyncOptions) =>
+  plugin(
+    "spawnSync",
+    plugin.init(async () => {
+      const { default: execa } = await import("execa");
+      const options: HarkSpawnExecaSyncOptions = {
+        ...(userExecaOptions?.stdio == null ? { stderr: "inherit", stdout: "inherit" } : {}),
+        ...userExecaOptions,
+      };
+      return plugin.switchMap(async (state: I) => {
+        if (typeof cli === "string") {
+          return execa.commandSync(cli, options);
+        } else {
+          const [command, ...args] = cli;
+          return execa.sync(command, args, options);
+        }
       });
     }),
   );

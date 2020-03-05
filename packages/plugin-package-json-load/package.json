@@ -1,0 +1,25 @@
+{
+  "name": "@hark/plugin-package-json-load",
+  "version": "0.9.0",
+  "description": "Load package.json files",
+  "keywords": "tasks, runner, hark, hark-plugin",
+  "license": "MIT",
+  "author": "Kir Belevich <kir@belevi.ch> (https://github.com/deepsweet)",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@babel/runtime": "^7.8.4",
+    "@hark/plugin": "^0.9.0",
+    "@hark/plugin-find-or-watch": "^0.9.0",
+    "@hark/plugin-json-parse": "^0.9.0",
+    "@hark/plugin-read": "^0.9.0"
+  },
+  "peerDependencies": {
+    "rxjs": ">=6"
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

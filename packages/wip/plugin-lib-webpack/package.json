@@ -1,0 +1,24 @@
+{
+  "name": "@hark/plugin-lib-webpack",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "🏭 Bundle files using Webpack",
+  "keywords": "tasks, runner, hark, hark-plugin, webpack",
+  "author": "Kir Belevich <kir@belevi.ch> (https://github.com/deepsweet)",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.8.4",
+    "@hark/plugin": "0.0.0-PLACEHOLDER",
+    "makethen": "^1.0.0",
+    "webpack": "^4.29.6"
+  },
+  "devDependencies": {
+    "@types/webpack": "^4.4.26"
+  }
+}

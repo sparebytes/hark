@@ -1,0 +1,35 @@
+{
+  "name": "@hark/plugin-lib-istanbul",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "💯 Collect, report and check code coverage using Istanbul",
+  "keywords": "tasks, runner, hark, hark-plugin, coverage, istanbul",
+  "author": "Kir Belevich <kir@belevi.ch> (https://github.com/deepsweet)",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.8.4",
+    "@hark/plugin": "0.0.0-PLACEHOLDER",
+    "@types/istanbul-lib-instrument": "^1.7.2",
+    "convert-source-map": "^1.6.0",
+    "istanbul-api": "^2.1.1",
+    "istanbul-lib-coverage": "^3.0.0",
+    "istanbul-lib-hook": "^3.0.0",
+    "istanbul-lib-instrument": "^4.0.0",
+    "istanbul-lib-report": "^3.0.0",
+    "istanbul-lib-source-maps": "^4.0.0",
+    "tsfn": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/convert-source-map": "^1.5.1",
+    "@types/istanbul-lib-coverage": "^2.0.0",
+    "@types/istanbul-lib-hook": "^2.0.0",
+    "@types/istanbul-lib-report": "^3.0.0",
+    "@types/istanbul-lib-source-maps": "^1.2.1"
+  }
+}

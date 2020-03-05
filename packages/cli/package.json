@@ -1,0 +1,34 @@
+{
+  "name": "@hark/cli",
+  "version": "0.9.0",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "bin": {
+    "hark": "./bin/hark.js"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.8.4",
+    "@hark/plugin": "^0.9.0",
+    "@hark/plugin-monorepo": "^0.9.0",
+    "@hark/plugin-package-json-format": "^0.9.0",
+    "@hark/reporter-verbose": "^0.9.0",
+    "@hark/task-group": "^0.9.0",
+    "chalk": "3.0.0",
+    "clipanion": "^2.1.6"
+  },
+  "peerDependencies": {
+    "@babel/register": "*",
+    "rxjs": ">=6"
+  },
+  "peerDependenciesMeta": {
+    "@babel/register": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

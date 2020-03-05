@@ -1,0 +1,21 @@
+{
+  "name": "@hark/plugin-find-git-staged",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "🔍 Find Git staged files and filter them using glob patterns",
+  "keywords": "tasks, runner, glob, git, hark, hark-plugin",
+  "author": "Kir Belevich <kir@belevi.ch> (https://github.com/deepsweet)",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.8.4",
+    "@hark/plugin": "0.0.0-PLACEHOLDER",
+    "execa": "^4.0.0",
+    "multimatch": "^4.0.0"
+  }
+}

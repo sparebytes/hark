@@ -1,0 +1,22 @@
+{
+  "name": "@hark/plugin-lib-esm-loader",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "🏭 Copy a predefined ESM loader file to a directory",
+  "keywords": "tasks, runner, hark, hark-plugin, esm",
+  "author": "Kir Belevich <kir@belevi.ch> (https://github.com/deepsweet)",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "dependencies": {
+    "@hark/plugin": "0.0.0-PLACEHOLDER",
+    "copie": "^1.0.0"
+  },
+  "devDependencies": {
+    "esm": "^3.2.22"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@hark/plugin-lib-karma",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "✅ Run tests using Karma",
+  "keywords": "tasks, runner, hark, hark-plugin, karma",
+  "author": "Kir Belevich <kir@belevi.ch> (https://github.com/deepsweet)",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.8.4",
+    "@hark/plugin": "0.0.0-PLACEHOLDER",
+    "karma": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/karma": "^3.0.2"
+  }
+}

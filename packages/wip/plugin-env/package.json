@@ -1,0 +1,19 @@
+{
+  "name": "@hark/plugin-env",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "👔 Set environment variable using process.env",
+  "keywords": "tasks, runner, hark, hark-plugin",
+  "author": "Kir Belevich <kir@belevi.ch> (https://github.com/deepsweet)",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.8.4",
+    "@hark/plugin": "0.0.0-PLACEHOLDER"
+  }
+}

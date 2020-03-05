@@ -1,0 +1,26 @@
+{
+  "name": "@hark/plugin-find",
+  "version": "0.9.0",
+  "description": "🔍 Find files using glob patterns",
+  "keywords": "tasks, runner, glob, hark, hark-plugin",
+  "license": "MIT",
+  "author": "Kir Belevich <kir@belevi.ch> (https://github.com/deepsweet)",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc --outDir ./dist --rootDir ./src --baseUrl . --declaration --emitDeclarationOnly --pretty --skipLibCheck \"src/index.ts\""
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.8.4",
+    "@hark/plugin": "^0.9.0",
+    "globby": "^11.0.0"
+  },
+  "peerDependencies": {
+    "rxjs": ">=6"
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

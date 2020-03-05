@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@hark/*": ["packages/*"]
+    }
+  },
+  "include": ["harkfile.ts", "./src", "packages/*/src", "example/*.ts", "example/*/*.ts"]
+}

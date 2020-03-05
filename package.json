@@ -1,0 +1,55 @@
+{
+  "private": true,
+  "name": "hark-root-monorepo",
+  "version": "0.9.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sparebytes/hark.git"
+  },
+  "scripts": {
+    "hark": "node ./bootstrap-hark.js",
+    "hark:debug": "node --inspect=127.0.0.1:44444 --inspect-brk ./bootstrap-hark.js",
+    "example": "cd example && yarn",
+    "tsc": "tsc",
+    "test": "jest",
+    "publish:packages": "lerna publish from-package --contents dist"
+  },
+  "workspaces": [
+    ".",
+    "packages/*",
+    "example",
+    "example/*"
+  ],
+  "dependencies": {
+    "@babel/runtime": "^7.8.4",
+    "clipanion": "^2.1.6",
+    "core-js": "^3.6.0",
+    "core-js-pure": "^3.6.0",
+    "pifs": "^1.0.0",
+    "regenerator-runtime": "^0.13.3",
+    "rxjs": "^6.5.4",
+    "tslib": "^1.10.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/plugin-proposal-private-methods": "^7.8.3",
+    "@babel/plugin-transform-typescript": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-typescript": "^7.8.3",
+    "@babel/register": "^7.8.3",
+    "@types/babel__core": "^7.1.4",
+    "@types/jest": "^25.1.3",
+    "@types/node": "^13.5.1",
+    "babel-jest": "^25.1.0",
+    "babel-plugin-transform-imports": "^2.0.0",
+    "jest": "^25.1.0",
+    "lerna": "^3.20.2",
+    "organize-imports-cli": "^0.7.0",
+    "prettier": "^1.19.1",
+    "rimraf": "^3.0.1",
+    "typescript": "~3.8.3"
+  }
+}

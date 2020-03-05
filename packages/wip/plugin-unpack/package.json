@@ -1,0 +1,26 @@
+{
+  "name": "@hark/plugin-unpack",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "🗜 Unpack .tar/.tar.bz2/.tar.gz/.zip archives",
+  "keywords": "tasks, runner, hark, hark-plugin, unpack, tar, tarbz2, targz, zip",
+  "contributors": [
+    "Philipp 'luii' Czarnetzk <iczarnetzki.philipp@protonmail.ch> (https://github.com/luii)",
+    "Kir Belevich <kir@belevi.ch> (https://github.com/deepsweet)"
+  ],
+  "license": "MIT",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "dependencies": {
+    "@hark/plugin": "0.0.0-PLACEHOLDER",
+    "decompress": "^4.2.0"
+  },
+  "devDependencies": {
+    "@babel/runtime": "^7.8.4",
+    "@types/decompress": "^4.2.2"
+  }
+}

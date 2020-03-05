@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "name": "hark-root-monorepo-release",
+  "version": "0.0.0",
+  "scripts": {
+    "hark": "hark"
+  },
+  "dependencies": {
+    "@babel/core": "^7.8.6",
+    "@babel/register": "^7.8.6",
+    "@types/babel__core": "^7.1.6",
+    "clipanion": "^2.1.6",
+    "rxjs": "^6.5.4",
+    "@hark/cli": "*"
+  },
+  "workspaces": [
+    "packages/*/dist"
+  ]
+}

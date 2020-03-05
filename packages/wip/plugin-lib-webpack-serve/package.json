@@ -1,0 +1,23 @@
+{
+  "name": "@hark/plugin-lib-webpack-serve",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "🏭 Run Webpack development server",
+  "keywords": "tasks, runner, hark, hark-plugin, webpack",
+  "author": "Kir Belevich <kir@belevi.ch> (https://github.com/deepsweet)",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=10.13.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.8.4",
+    "@hark/plugin": "0.0.0-PLACEHOLDER",
+    "webpack-serve": "^2.0.3"
+  },
+  "devDependencies": {
+    "@types/webpack-serve": "^2.0.1"
+  }
+}

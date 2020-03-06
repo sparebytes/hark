@@ -86,7 +86,7 @@ export interface HarkMonad<T> extends Observable<T> {
 }
 
 export function pluginMonad<T>(obs: Observable<T>, context: HarkPluginContext) {
-  const result: HarkMonad<T> = obs.pipe(tap()) as HarkMonad<T>;
+  const result: HarkMonad<T> = Object.create(obs);
   result.pipe = (...fns: OperatorFunction<any, any>[]) => harkPipeFromArray(fns)(result);
   result.harkContext = context;
   result.harkOf = <R>(value: R) => {

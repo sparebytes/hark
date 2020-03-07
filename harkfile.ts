@@ -267,7 +267,7 @@ export class MyPackage extends MyProject {
 
     // babelTranspileSelf
     this.registerTask("babelTranspileSelf", (gc) =>
-      transpile({ watchMode: gc.watchMode, srcDir: `${path}/src`, outDir: `${path}/dist`, comments: true }),
+      transpile({ watchMode: gc.watchMode, srcDir: `${path}/src`, outDir: `${path}/dist/lib`, comments: true }),
     );
 
     // tsconfigData
@@ -277,7 +277,7 @@ export class MyPackage extends MyProject {
         compilerOptions: {
           baseUrl: ".",
           rootDir: "src",
-          outDir: "dist",
+          outDir: "dist/lib",
           isolatedModules: true,
           skipLibCheck: true,
           sourceMap: false,
@@ -286,7 +286,7 @@ export class MyPackage extends MyProject {
           composite: true,
         },
         include: ["src"],
-        exclude: ["**/*.test.tsx?"],
+        exclude: ["**/*.test.ts", "**/*.test.tsx"],
       }),
     );
 
@@ -390,8 +390,8 @@ export const copyPackageJson = ({
       jsonParse(),
       packageJsonClean({
         overwrite: (json) => ({
-          main: "index.js",
-          types: "index.d.ts",
+          main: "./lib/index.js",
+          types: "./lib/index.d.ts",
           ...(gitRepositoryUrl
             ? {
                 repository: {

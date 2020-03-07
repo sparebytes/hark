@@ -1,23 +1,30 @@
 {
   "compilerOptions": {
+    // Emit
     "target": "es2019",
     "module": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "forceConsistentCasingInFileNames": true,
+    "emitDecoratorMetadata": false,
     "useDefineForClassFields": true,
-    "strict": true,
-    "noUnusedLocals": false,
     "sourceMap": true,
     "declaration": true,
     "jsx": "react",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+
+    // Resolution
+    "lib": ["esnext"],
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "paths": {},
+
+    // Build
     "composite": true,
-    "noEmit": false,
+
+    // Checks
+    "strict": true,
+    "noUnusedLocals": false,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
   }
 }

@@ -16,10 +16,7 @@ export const monorepo = <M extends Monorepo<any, any>>(
     plugin.switchMake((monad, context, monad$) =>
       plugin.pipe(
         find(pathGlobs),
-        plugin.makeHigher(
-          plugin.of(undefined),
-          plugin.map(({ files }) => find(files.map((file) => `${file.path}/package.json`))),
-        ),
+        plugin.switchMake(({ files }) => find(files.map((file) => `${file.path}/package.json`))),
         read(),
         jsonParse(),
         plugin.map(({ files }) => {

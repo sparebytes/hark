@@ -15,7 +15,8 @@
     "lib": ["esnext"],
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "paths": {},
+    // "baseUrl": ".",
+    // "paths": {},
 
     // Build
     "composite": true,

@@ -140,7 +140,10 @@ plugin.make = <I, O>(pluginMaker: HarkPluginMaker<I, O>): HarkPlugin<I, O> => {
  */
 plugin.init = plugin.make;
 
-/** HarkPlugin: Wraps a higher-ordered-plugin (which returns another plugin) */
+/**
+ * HarkPlugin: Wraps a higher-ordered-plugin (which returns another plugin)
+ * @deprecated Try using plugin.switchMake instead.
+ */
 plugin.makeHigher = <I1, I2, O>(
   thePluginInput: HarkPlugin<I1, I2>,
   higherOrderPlugin: HarkPlugin<I1, HarkPlugin<I2, O>>,

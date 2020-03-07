@@ -166,10 +166,7 @@ export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTask
             plugin.warn(`Warning: "sourcePaths" task is not implemented for project ${this.name}. Returning none.`),
           ),
         ),
-        plugin.makeHigher(
-          plugin.of(undefined),
-          plugin.map((sourcePaths) => findOrWatch(gc.watchMode, sourcePaths)),
-        ),
+        plugin.switchMake((sourcePaths) => findOrWatch(gc.watchMode, sourcePaths)),
         read(),
       ),
     );

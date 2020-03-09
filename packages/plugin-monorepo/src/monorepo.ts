@@ -11,6 +11,7 @@ export class Monorepo<C extends BaseProjectContext, TASKS extends BaseProjectTas
     super(projects);
   }
   addProject(project: Project<C, TASKS>): this {
+    project.monorepo = this;
     if (this.taskGroupContext$ != null) {
       project.setTaskContext(this.taskGroupContext$ as any);
     }

@@ -16,9 +16,24 @@ import {
   PackageJsonAndImportComparison,
 } from "./models";
 import { ProjectGroup } from "./project-group";
+import { Monorepo } from "./monorepo";
 
 const builtinModules = new Set(builtinModulesArray);
 export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTasks<C>> extends HarkTaskGroup<C, TASKS> {
+  protected _monorepo?: Monorepo<C, TASKS>;
+  get monorepo(): Monorepo<C, TASKS> {
+    const v = this._monorepo;
+    if (v == null) {
+      throw new Error("monorepo hasn't been set yet!");
+    }
+    return v;
+  }
+  set monorepo(v: Monorepo<C, TASKS>) {
+    if (this._monorepo != null) {
+      throw new Error("monorepo has already been set!");
+    }
+    this._monorepo = v;
+  }
   readonly path?: PortablePath;
   readonly tags: Set<string | symbol>;
   constructor({ name, path, dependencyFilters$, sourcePaths$, tags }: BaseProjectOptions) {
@@ -75,7 +90,7 @@ export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTask
                 {
                   name: depName,
                   version: dependencies[depName] ?? peerDependencies[depName] ?? devDependencies[depName] ?? "*",
-                  isInMonorepo: gc.monorepo.hasProject(depName),
+                  isInMonorepo: this.monorepo.hasProject(depName),
                   isDependency: dependencies[depName] != null,
                   isDevDependency: devDependencies[depName] != null,
                   isPeerDependency: peerDependencies[depName] != null,
@@ -108,7 +123,7 @@ export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTask
       plugin.pipe(
         this.getTask("dependencyFilters"),
         plugin.map((dependencyFilters) =>
-          gc.monorepo.filterProjectsAdv({
+          this.monorepo.filterProjectsAdv({
             include: dependencyFilters,
             exclude: (project) => project === this,
           }),

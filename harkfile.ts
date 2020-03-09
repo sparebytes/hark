@@ -38,11 +38,11 @@ export const myMonorepoPlugin = monorepo(
             ? plugin.throwError("Cannot prepare in watch mode!")
             : plugin.pipe(
                 //
-                gc.monorepo.getTasks("clean", plugin.of(null)).combineLatestArray(),
+                this.monorepo.getTasks("clean", plugin.of(null)).combineLatestArray(),
                 last(),
                 this.getTask("buildRoot"),
                 last(),
-                gc.monorepo
+                this.monorepo
                   .filterProjectsAdv({
                     include: "*",
                     exclude: [this],

@@ -26,7 +26,6 @@ export interface MonorepoDependency {
 }
 
 export interface BaseProjectContext {
-  monorepo: Monorepo<any, any>;
   watchMode: boolean;
 }
 

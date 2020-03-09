@@ -38,7 +38,7 @@ export const myMonorepoPlugin = monorepo(
             ? plugin.throwError("Cannot prepare in watch mode!")
             : plugin.pipe(
                 //
-                this.monorepo.getTasks("clean", plugin.of(null)).combineLatestArray(),
+                this.monorepo.tasks.dependencyFilters(plugin.of(null)).combineLatestArray(),
                 last(),
                 this.getTask("buildRoot"),
                 last(),
@@ -47,7 +47,7 @@ export const myMonorepoPlugin = monorepo(
                     include: "*",
                     exclude: [this],
                   })
-                  .getTasks("prepare", plugin.of(null))
+                  .tasks.prepare(plugin.of(null))
                   .combineLatestArray(),
                 last(),
               );
@@ -55,7 +55,7 @@ export const myMonorepoPlugin = monorepo(
         .registerTask("format", function() {
           return plugin.pipe(
             //
-            this.withDependencies((deps) => deps.getTasks("packageJsonFormat", plugin.of(null)).combineLatestArray()),
+            this.withDependencies((deps) => deps.tasks.packageJsonFormat(plugin.of(null)).combineLatestArray()),
             spawn(["organize-imports-cli", "tsconfig.json"]),
             spawn(["prettier", "--write", "src/**/*.ts", "packages/**/src/**/*.ts"]),
           );
@@ -225,7 +225,7 @@ export class MyProject extends Project<MyProjectTaskContext, MyProjectTasks> {
         plugin.combineLatest(
           //
           this.getTask("tsconfigData", plugin.of(null)),
-          this.withDependencies((deps) => deps.getTasks("tsconfigGen").combineLatestArray()),
+          this.withDependencies((deps) => deps.tasks.tsconfigGen().combineLatestArray()),
         ),
         map(([tsconfigData, depProjectTsconfigs]) => {
           if (tsconfigData == null && depProjectTsconfigs.length === 0) {
@@ -287,7 +287,7 @@ export class MyPackage extends MyProject {
     this.registerTask("tsconfigData", () =>
       plugin.pipe(
         this.withDependencies((pg) =>
-          pg.getTasks("tsconfigExportedPaths", plugin.of(TsconfigExportedPaths.none())).combineLatestArray(),
+          pg.tasks.tsconfigExportedPaths(plugin.of(TsconfigExportedPaths.none())).combineLatestArray(),
         ),
         map((pathsArray) =>
           TsconfigExportedPaths.merge(pathsArray.map(([project, paths]) => paths.makeCompilerOptions(this.path))),

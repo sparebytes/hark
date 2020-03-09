@@ -27,7 +27,7 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
             plugin.switchMake((theMonorepo) =>
               theMonorepo
                 .filterProjectsByAny(this.projects, this.context.allProjectsFilter)
-                .getTasks(this.context.defaultTasks.clean, plugin.warn("clean task not defined."))
+                .tasks[this.context.defaultTasks.clean](plugin.warn("clean task not defined."))
                 .concat(),
             ),
           )
@@ -48,7 +48,7 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
             plugin.switchMake((theMonorepo) =>
               theMonorepo
                 .filterProjectsByAny(this.projects, this.context.allProjectsFilter)
-                .getTasks(this.context.defaultTasks.format, plugin.warn("format task not defined."))
+                .tasks[this.context.defaultTasks.format](plugin.warn("format task not defined."))
                 .combineLatestArray(),
             ),
           )
@@ -85,7 +85,7 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
             plugin.switchMake((theMonorepo) =>
               theMonorepo
                 .filterProjectsByAny(this.projects, this.context.rootProjectFilter)
-                .getTasks(this.task, plugin.of(undefined))
+                .tasks[this.task](plugin.of(undefined))
                 .combineLatestArray(),
             ),
             tap((results) => {
@@ -122,7 +122,7 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
             plugin.switchMake((theMonorepo) =>
               theMonorepo
                 .filterProjectsByAny(this.projects, this.context.rootProjectFilter)
-                .getTasks(this.context.defaultTasks.buildRoot)
+                .tasks[this.context.defaultTasks.buildRoot]()
                 .combineLatestArray(),
             ),
           )
@@ -143,7 +143,7 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
             plugin.switchMake((theMonorepo) =>
               theMonorepo
                 .filterProjectsByAny(this.projects, this.context.allProjectsFilter)
-                .getTasks(this.context.defaultTasks.packageJsonFormat, plugin.of(null))
+                .tasks[this.context.defaultTasks.packageJsonFormat](plugin.of(null))
                 .combineLatestArray(),
             ),
           )
@@ -176,7 +176,7 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
             plugin.switchMake((theMonorepo) =>
               theMonorepo
                 .filterProjectsByAny(this.projects, this.context.allProjectsFilter)
-                .getTasks(this.context.defaultTasks.compareImportsToPackageJson)
+                .tasks[this.context.defaultTasks.compareImportsToPackageJson]()
                 .combineLatestArray(),
             ),
             tap((results) => {
@@ -227,7 +227,7 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
             plugin.switchMake((theMonorepo) =>
               theMonorepo
                 .filterProjectsByAny(this.projects, this.context.rootProjectFilter)
-                .getTasks(this.context.defaultTasks.dev, plugin.of(null))
+                .tasks[this.context.defaultTasks.dev](plugin.of(null))
                 .combineLatestArray(),
             ),
           )

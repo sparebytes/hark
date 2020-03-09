@@ -47,7 +47,7 @@ export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTask
     this.registerTask("build", () => this.getTask("buildDepenencies"));
 
     // buildDependencies
-    this.registerTask("buildDependencies", () => this.withDependencies((deps) => deps.getTasks("build").combineLatestArray()));
+    this.registerTask("buildDependencies", () => this.withDependencies((deps) => deps.tasks.build().combineLatestArray()));
 
     // sourcePaths
     if (sourcePaths$ != null) {

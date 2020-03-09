@@ -182,8 +182,19 @@ export class ProjectGroup<C extends BaseProjectContext, TASKS extends BaseProjec
     );
     return new PluginsSet<any, [Project<C, TASKS>, R | F][]>(taskPlugins);
   }
+  tasks: {
+    [K in keyof TASKS]: {
+      (): PluginsSet<any, [Project<C, TASKS>, TASKS[K]][]>;
+      <F>(fallbackPlugin: HarkPlugin<any, F>): PluginsSet<any, [Project<C, TASKS>, TASKS[K] | F][]>;
+    };
+  } = new Proxy(this, tasksProxyHandler) as any;
 }
 
 function isIterable<T>(obj: unknown | Iterable<T>): obj is Iterable<T> {
   return obj != null && typeof obj === "object" && typeof (obj as any)[Symbol.iterator] === "function";
 }
+
+const tasksProxyHandler = {
+  get: (projectGroup: ProjectGroup<any, any>, prop: string) => <F>(fallbackPlugin?: HarkPlugin<any, F>) =>
+    projectGroup.getTasks(prop, fallbackPlugin),
+};

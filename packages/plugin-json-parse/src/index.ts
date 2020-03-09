@@ -1,9 +1,9 @@
 import plugin, { HarkDataFilesProps, HarkJsonFilesProps } from "@hark/plugin";
 
-export const jsonParse = <I extends HarkDataFilesProps, T = unknown>(parseFn: (text: string) => any = JSON.parse) =>
-  plugin<I, HarkJsonFilesProps<T>>(
+export const jsonParse = <T = unknown>(parseFn: (text: string) => any = JSON.parse) =>
+  plugin<HarkDataFilesProps, HarkJsonFilesProps<T>>(
     "jsonParse",
-    plugin.map(({ files }: I, { logPath }) => {
+    plugin.map(({ files }: HarkDataFilesProps, { logPath }) => {
       const newFiles = files.map((file) => {
         logPath(file.path);
         if (typeof file.data !== "string") {

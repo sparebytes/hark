@@ -1,4 +1,4 @@
-import { HarkPlugin, plugin, ppath } from "@hark/plugin";
+import { HarkJsonFilesProps, HarkPlugin, plugin, ppath } from "@hark/plugin";
 import { find } from "@hark/plugin-find";
 import { jsonParse } from "@hark/plugin-json-parse";
 import { read } from "@hark/plugin-read";
@@ -19,7 +19,7 @@ export const monorepo = <M extends Monorepo<any, any>>(
         plugin.switchMake(({ files }) => find(files.map((file) => `${file.path}/package.json`))),
         read(),
         jsonParse(),
-        plugin.map(({ files }) => {
+        plugin.map(({ files }: HarkJsonFilesProps<unknown>) => {
           return {
             packages: files.map(
               (f) =>

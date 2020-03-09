@@ -49,6 +49,7 @@ const contains = function<T extends Path>(pathUtils: PathUtils<T>, from: T, to: 
 
 npath.fromPortablePath = fromPortablePath;
 npath.toPortablePath = toPortablePath;
+npath.toRelativePortablePath = toRelativePortablePath;
 
 npath.contains = (from: NativePath, to: NativePath) => contains(npath, from, to);
 ppath.contains = (from: PortablePath, to: PortablePath) => contains(ppath, from, to);
@@ -109,6 +110,7 @@ export interface PathUtils<P extends Path> {
 export interface ConvertUtils {
   fromPortablePath: (p: Path) => NativePath;
   toPortablePath: (p: Path) => PortablePath;
+  toRelativePortablePath: (p: Path) => PortablePath;
 }
 
 const WINDOWS_PATH_REGEXP = /^[a-zA-Z]:.*$/;
@@ -128,6 +130,14 @@ function toPortablePath(p: Path): PortablePath {
   if (process.platform !== "win32") return p as PortablePath;
 
   return (p.match(WINDOWS_PATH_REGEXP) ? `/${p}` : p).replace(/\\/g, `/`) as PortablePath;
+}
+
+function toRelativePortablePath(p: Path): PortablePath {
+  p = toPortablePath(p);
+  if (ppath.isAbsolute(p)) {
+    p = ppath.relative(toPortablePath(process.cwd()), p);
+  }
+  return p;
 }
 
 export function convertPath<P extends Path>(targetPathUtils: PathUtils<P>, sourcePath: Path): P {

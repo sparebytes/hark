@@ -1,4 +1,4 @@
-import { plugin, HarkPluginsArrayFrom, HarkPlugin } from "@hark/plugin";
+import { HarkPlugin, plugin } from "@hark/plugin";
 import { Observable } from "rxjs";
 import { filter } from "rxjs/operators";
 import { Writable } from "stream";

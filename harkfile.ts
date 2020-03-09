@@ -1,5 +1,5 @@
 import { cliExtendMonorepo, extendCli, HarkMonorepoCommand, HarkMonorepoCommandContext } from "@hark/cli";
-import { HarkCompilationEvent, HarkJsonFilesProps, npath, plugin, PortablePath } from "@hark/plugin";
+import { HarkCompilationEvent, HarkJsonFilesProps, npath, Path, plugin, PortablePath, ppath } from "@hark/plugin";
 import { copy } from "@hark/plugin-copy";
 import { find } from "@hark/plugin-find";
 import { findOrWatch } from "@hark/plugin-find-or-watch";
@@ -165,6 +165,7 @@ export interface MyProjectTasks extends BaseProjectTasks<MyProjectTaskContext> {
   babelTranspile: any;
   babelTranspileDependencies: any;
   babelTranspileSelf: any;
+  tsconfigExportedPaths: ITsconfigExportedPaths;
 }
 
 export class MyProject extends Project<MyProjectTaskContext, MyProjectTasks> {
@@ -270,24 +271,47 @@ export class MyPackage extends MyProject {
       transpile({ watchMode: gc.watchMode, srcDir: `${path}/src`, outDir: `${path}/dist/lib`, comments: true }),
     );
 
+    // tsconfigExportedPaths
+    this.registerTask("tsconfigExportedPaths", () =>
+      plugin.pipe(
+        this.getTask("tsconfigData", plugin.of(null)),
+        map((tsconfigData) => {
+          const outDir = tsconfigData?.compilerOptions?.outDir;
+          if (!outDir) return TsconfigExportedPaths.none();
+          return TsconfigExportedPaths.factory(this.name, this.path, { ".": ["dist/lib/index"], "./*": ["dist/lib/*"] });
+        }),
+      ),
+    );
+
     // tsconfigData
     this.registerTask("tsconfigData", () =>
-      plugin.of({
-        extends: "../../tsconfig.base.json",
-        compilerOptions: {
-          baseUrl: ".",
-          rootDir: "src",
-          outDir: "dist/lib",
-          isolatedModules: true,
-          skipLibCheck: true,
-          sourceMap: false,
-          declaration: true,
-          emitDeclarationOnly: true,
-          composite: true,
-        },
-        include: ["src"],
-        exclude: ["**/*.test.ts", "**/*.test.tsx"],
-      }),
+      plugin.pipe(
+        this.withDependencies((pg) =>
+          pg.getTasks("tsconfigExportedPaths", plugin.of(TsconfigExportedPaths.none())).combineLatestArray(),
+        ),
+        map((pathsArray) =>
+          TsconfigExportedPaths.merge(pathsArray.map(([project, paths]) => paths.makeCompilerOptions(this.path))),
+        ),
+        plugin.switchMake((paths) =>
+          plugin.of({
+            extends: "../../tsconfig.base.json",
+            compilerOptions: {
+              baseUrl: ".",
+              rootDir: "src",
+              outDir: "dist/lib",
+              isolatedModules: true,
+              skipLibCheck: true,
+              sourceMap: false,
+              declaration: true,
+              emitDeclarationOnly: true,
+              composite: true,
+              paths,
+            },
+            include: ["src"],
+            exclude: ["**/*.test.ts", "**/*.test.tsx"],
+          }),
+        ),
+      ),
     );
 
     // prepare
@@ -419,3 +443,54 @@ export const copyPackageJson = ({
       write(writeDir),
     ),
   );
+
+interface ITsconfigExportedPaths {
+  makeCompilerOptions(newRelPath: Path): Record<string, string[]>;
+}
+
+const tsconfigExportedPathsNone: ITsconfigExportedPaths = {
+  makeCompilerOptions: (newRelPath: Path): Record<string, string[]> => ({}),
+};
+
+class TsconfigExportedPaths implements ITsconfigExportedPaths {
+  constructor(
+    readonly packageName: PortablePath,
+    readonly relPath: PortablePath,
+    readonly importPaths: { readonly [k: string]: PortablePath[] },
+  ) {}
+  static factory(packageName: string, relPath: Path, importPaths: Record<string, Path[]>) {
+    const newRelPath = npath.toRelativePortablePath(relPath);
+    const newImportPaths: Record<string, PortablePath[]> = {};
+    for (const k in importPaths) {
+      const v = importPaths[k];
+      if (typeof v === "string") {
+        throw new Error("Expected a an array of strings but just got a string: " + v);
+      }
+      newImportPaths[k] = v.map((p) => npath.toRelativePortablePath(p));
+    }
+    return new TsconfigExportedPaths(packageName as PortablePath, newRelPath, newImportPaths);
+  }
+  static none(): ITsconfigExportedPaths {
+    return tsconfigExportedPathsNone;
+  }
+  static merge(pathsArray: Record<string, string[]>[]) {
+    const results: Record<string, string[]> = {};
+    for (const paths of pathsArray) {
+      for (const k in paths) {
+        const resultsK = (results[k] = results[k] ?? []);
+        resultsK.push(...paths[k]);
+      }
+    }
+    return results;
+  }
+  makeCompilerOptions(newRelPath: Path): Record<string, string[]> {
+    const importPathPrefix = ppath.relative(npath.toRelativePortablePath(newRelPath), this.relPath);
+    const newImportPaths: Record<string, PortablePath[]> = {};
+    for (const k in this.importPaths) {
+      newImportPaths[ppath.join(this.packageName, k as PortablePath)] = this.importPaths[k].map((p) =>
+        ppath.join(importPathPrefix, p),
+      );
+    }
+    return newImportPaths;
+  }
+}

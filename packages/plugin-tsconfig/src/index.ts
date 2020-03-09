@@ -67,7 +67,7 @@ export function generateTsconfigFile(options: {
     exclude: data.exclude?.map((p) => ppath.join(relPath, p as PortablePath)),
     references: data.references == null ? references : references == null ? data.references : [...data.references, ...references],
   };
-  const contents = JSON.stringify(json, undefined, 2);
+  let contents = JSON.stringify(json, undefined, 2);
   const filename = `${filenamePrefix ?? ""}${
     filenameHash === true
       ? generateHash(contents, 6)
@@ -75,6 +75,10 @@ export function generateTsconfigFile(options: {
       ? generateHash(contents, filenameHash)
       : ""
   }${filenameSuffix ?? ""}` as Filename;
+  if (!json.compilerOptions.tsBuildInfoFile) {
+    json.compilerOptions.tsBuildInfoFile = `${filename}.tsbuildinfo`;
+    contents = JSON.stringify(json, undefined, 2);
+  }
   const tsconfigPath = ppath.join(fileDir, filename);
   const result: HarkJsonFile = {
     path: tsconfigPath,

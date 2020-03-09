@@ -1,5 +1,4 @@
 import { Observable, of, OperatorFunction, UnaryFunction } from "rxjs";
-import { tap } from "rxjs/operators";
 import { HarkOperator, HarkPlugin, HarkReporter } from "./models";
 
 const noop = (x: any) => x;

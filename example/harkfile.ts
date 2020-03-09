@@ -17,7 +17,7 @@ export default extendCli<HarkMonorepoCommandContext<MyMonorepo>, HarkMonorepoCom
           foo.registerTask("dev", () =>
             plugin.pipe(
               //
-              foo.getTask("build"),
+              foo.task.build(),
               spawn(`node -r @babel/register foo/dist/index.js`),
             ),
           );

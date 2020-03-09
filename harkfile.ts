@@ -40,7 +40,7 @@ export const myMonorepoPlugin = monorepo(
                 //
                 this.monorepo.tasks.dependencyFilters(plugin.of(null)).combineLatestArray(),
                 last(),
-                this.getTask("buildRoot"),
+                this.task.buildRoot(),
                 last(),
                 this.monorepo
                   .filterProjectsAdv({
@@ -97,7 +97,7 @@ export default extendCli<HarkMonorepoCommandContext<MyMonorepo>, HarkMonorepoCom
         await this.makeMonorepo$({ watchMode: false, release: true })
           .pipe(
             plugin.switchMake((theMonorepo) =>
-              theMonorepo.getProject("root").getTask("prepare", plugin.warn("prepare task not defined.")),
+              theMonorepo.getProject("root").task.prepare(plugin.warn("prepare task not defined.")),
             ),
           )
           .toPromise();
@@ -131,7 +131,7 @@ export default extendCli<HarkMonorepoCommandContext<MyMonorepo>, HarkMonorepoCom
                       stdio: "inherit",
                     }),
                 last(),
-                theMonorepo.getProject("root").getTask("prepare"),
+                theMonorepo.getProject("root").task.prepare(),
                 spawn.sync(["lerna", "publish", "from-package", "--contents", "dist", ...yesArgs], {
                   stdio: "inherit",
                 }),
@@ -178,8 +178,8 @@ export class MyProject extends Project<MyProjectTaskContext, MyProjectTasks> {
         plugin.log("Starting Build Root"),
         plugin.combineLatestArray([
           //
-          this.getTask("build"),
-          this.getTask("typescriptCompile"),
+          this.task.build(),
+          this.task.typescriptCompile(),
         ]),
         debounceTime(gc.devDebounceTime),
         plugin.log("Done Build Root"),
@@ -190,8 +190,8 @@ export class MyProject extends Project<MyProjectTaskContext, MyProjectTasks> {
     this.registerTask("build", () =>
       plugin.ifEmpty(
         plugin.combineLatestArray([
-          this.getTask("buildDependencies", plugin.warn(`"buildDependencies" task not implemented. Doing Nothing.`)),
-          this.getTask("babelTranspileSelf", plugin.warn(`"babelTranspileSelf" task is not implemented. Doing nothing.`)),
+          this.task.buildDependencies(plugin.warn(`"buildDependencies" task not implemented. Doing Nothing.`)),
+          this.task.babelTranspileSelf(plugin.warn(`"babelTranspileSelf" task is not implemented. Doing nothing.`)),
         ]),
         plugin.warn("Nothing to do apparently"),
       ),
@@ -200,7 +200,7 @@ export class MyProject extends Project<MyProjectTaskContext, MyProjectTasks> {
     // typescriptCompile
     this.registerTask("typescriptCompile", (gc) =>
       plugin.pipe(
-        this.getTask("tsconfigGen"),
+        this.task.tsconfigGen(),
         plugin.switchMake(({ files }) => {
           if (files.length === 0) {
             return plugin.pipe(
@@ -224,7 +224,7 @@ export class MyProject extends Project<MyProjectTaskContext, MyProjectTasks> {
       plugin.pipe(
         plugin.combineLatest(
           //
-          this.getTask("tsconfigData", plugin.of(null)),
+          this.task.tsconfigData(plugin.of(null)),
           this.withDependencies((deps) => deps.tasks.tsconfigGen().combineLatestArray()),
         ),
         map(([tsconfigData, depProjectTsconfigs]) => {
@@ -274,7 +274,7 @@ export class MyPackage extends MyProject {
     // tsconfigExportedPaths
     this.registerTask("tsconfigExportedPaths", () =>
       plugin.pipe(
-        this.getTask("tsconfigData", plugin.of(null)),
+        this.task.tsconfigData(plugin.of(null)),
         map((tsconfigData) => {
           const outDir = tsconfigData?.compilerOptions?.outDir;
           if (!outDir) return TsconfigExportedPaths.none();

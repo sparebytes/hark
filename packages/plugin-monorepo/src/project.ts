@@ -44,7 +44,7 @@ export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTask
     this.tags.add(name);
 
     // build
-    this.registerTask("build", () => this.getTask("buildDepenencies"));
+    this.registerTask("build", () => this.task.buildDepenencies());
 
     // buildDependencies
     this.registerTask("buildDependencies", () => this.withDependencies((deps) => deps.tasks.build().combineLatestArray()));
@@ -77,7 +77,7 @@ export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTask
     // monorepoDependencies
     this.registerTask("monorepoDependencies", (gc) =>
       plugin.pipe(
-        this.getTask("packageJson", plugin.of({})),
+        this.task.packageJson(plugin.of({})),
         plugin.map((json: any) => {
           const dependencies = json?.dependencies ?? {};
           const peerDependencies = json?.peerDependencies ?? {};
@@ -108,7 +108,7 @@ export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTask
     } else {
       this.registerTask("dependencyFilters", () =>
         plugin.pipe(
-          this.getTask("monorepoDependencies"),
+          this.task.monorepoDependencies(),
           plugin.map((allDependencies) =>
             Object.values(allDependencies)
               .filter((d) => d.isInMonorepo)
@@ -121,7 +121,7 @@ export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTask
     // dependencyProjects
     this.registerTask("dependencyProjects", (gc) =>
       plugin.pipe(
-        this.getTask("dependencyFilters"),
+        this.task.dependencyFilters(),
         plugin.map((dependencyFilters) =>
           this.monorepo.filterProjectsAdv({
             include: dependencyFilters,
@@ -136,8 +136,8 @@ export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTask
       plugin.pipe(
         plugin.combineLatest(
           //
-          this.getTask("collectImports"),
-          this.getTask("monorepoDependencies"),
+          this.task.collectImports(),
+          this.task.monorepoDependencies(),
         ),
         plugin.map(([imports, monorepoDependencies]) => {
           // TODO, this this account for imports from other package json files that are declared as peer dependencies in their respective packages.
@@ -190,7 +190,7 @@ export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTask
     this.registerTask("collectImports", () =>
       plugin.pipe(
         //
-        this.getTask("readSource"),
+        this.task.readSource(),
         plugin.map(({ files }) => {
           const imports = new Set<string>();
           const filterRegex = /\.([jt]sx?|[cm]js)$/;
@@ -234,7 +234,7 @@ export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTask
   withDependencies<I, O>(callback: (projectGroup: ProjectGroup<C, TASKS>) => HarkPlugin<I, O>): HarkPlugin<I, O> {
     return plugin.switchMake((m, c, m$) =>
       plugin.pipe(
-        this.getTask("dependencyProjects"),
+        this.task.dependencyProjects(),
         plugin.switchMap((projectGroup) => callback((projectGroup as any) as ProjectGroup<C, TASKS>)(m$)),
       ),
     );

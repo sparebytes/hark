@@ -111,6 +111,12 @@ export class HarkTaskGroup<C extends {}, TASKS extends HarkTaskGroupTasks> {
       }),
     );
   }
+  task: {
+    [K in keyof TASKS]: {
+      (): HarkPlugin<any, TASKS[K]>;
+      <F>(fallbackPlugin?: HarkPlugin<any, F>): HarkPlugin<any, TASKS[K] | F>;
+    };
+  } = new Proxy(this, taskProxyHandler) as any;
   setTaskContext(taskContext$: HarkMonad<C>): this {
     this.taskGroupContextDefered.resolve(taskContext$);
     return this;
@@ -120,6 +126,11 @@ export class HarkTaskGroup<C extends {}, TASKS extends HarkTaskGroupTasks> {
     return this;
   }
 }
+
+const taskProxyHandler = {
+  get: (taskGroup: HarkTaskGroup<any, any>, prop: string) => <F>(fallbackPlugin?: HarkPlugin<any, F>) =>
+    taskGroup.getTask(prop, fallbackPlugin),
+};
 
 // const noValueSymbol = Symbol("noValue");
 // class RxSlowMap<K, V> extends Map<K, V> {

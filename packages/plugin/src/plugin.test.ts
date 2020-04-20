@@ -57,9 +57,7 @@ test("plugin.combineLatest", async () => {
 });
 describe("plugin.combineLatestArray", () => {
   test("empty", async () => {
-    const result = await getRootMonoad(1)
-      .pipe(plugin.combineLatestArray([]))
-      .toPromise();
+    const result = await getRootMonoad(1).pipe(plugin.combineLatestArray([])).toPromise();
     expect(result).toMatchObject([]);
   });
   test("empty w/ fallback", async () => {

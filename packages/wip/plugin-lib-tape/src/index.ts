@@ -20,7 +20,7 @@ export default (reporter?: () => NodeJS.ReadWriteStream) =>
         stream.pipe(process.stdout);
       }
 
-      results.once("done", function(this: any) {
+      results.once("done", function (this: any) {
         this._stream.queue(`\n1..${this.count}\n`);
         this._stream.queue(`# tests ${this.count}\n`);
         this._stream.queue(`# pass  ${this.pass}`);

@@ -32,7 +32,7 @@ export type FSPath<T extends Path> = T | number;
 export const npath: PathUtils<NativePath> & ConvertUtils = Object.create(path) as any;
 export const ppath: PathUtils<PortablePath> = Object.create(path.posix) as any;
 
-const contains = function<T extends Path>(pathUtils: PathUtils<T>, from: T, to: T) {
+const contains = function <T extends Path>(pathUtils: PathUtils<T>, from: T, to: T) {
   from = pathUtils.normalize(from);
   to = pathUtils.normalize(to);
 

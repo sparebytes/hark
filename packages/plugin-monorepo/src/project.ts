@@ -15,8 +15,8 @@ import {
   MonorepoDependency,
   PackageJsonAndImportComparison,
 } from "./models";
-import { ProjectGroup } from "./project-group";
 import { Monorepo } from "./monorepo";
+import { ProjectGroup } from "./project-group";
 
 const builtinModules = new Set(builtinModulesArray);
 export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTasks<C>> extends HarkTaskGroup<C, TASKS> {

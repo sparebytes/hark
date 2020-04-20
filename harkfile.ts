@@ -33,12 +33,13 @@ export const myMonorepoPlugin = monorepo(
       }),
     ).addProject(
       new MyProject({ name: "root", dependencyFilters$: of(["*"]) })
-        .registerTask("prepare", function(gc) {
+        .registerTask("prepare", function (gc) {
           return gc.watchMode
             ? plugin.throwError("Cannot prepare in watch mode!")
             : plugin.pipe(
                 //
-                this.monorepo.tasks.dependencyFilters(plugin.of(null)).combineLatestArray(),
+                plugin.log("Cleaning"),
+                this.monorepo.tasks.clean(plugin.of(null)).combineLatestArray(),
                 last(),
                 this.task.buildRoot(),
                 last(),
@@ -52,12 +53,12 @@ export const myMonorepoPlugin = monorepo(
                 last(),
               );
         })
-        .registerTask("format", function() {
+        .registerTask("format", function () {
           return plugin.pipe(
             //
             this.withDependencies((deps) => deps.tasks.packageJsonFormat(plugin.of(null)).combineLatestArray()),
             spawn(["organize-imports-cli", "tsconfig.json"]),
-            spawn(["prettier", "--write", "src/**/*.ts", "packages/**/src/**/*.ts"]),
+            spawn(["prettier", "--write", "harkfile.ts", "packages/**/src/**/*.ts"]),
           );
         })
         .registerTask("clean", () =>
@@ -107,6 +108,12 @@ export default extendCli<HarkMonorepoCommandContext<MyMonorepo>, HarkMonorepoCom
 
     @cliRegister
     class PublishCommand extends BaseCommand {
+      static usage = Command.Usage({
+        category: "Distribute",
+        description: `publish to npm`,
+        examples: [["Publish a new version to NPM", `hark publish [major | minor | patch | premajor | preminor | prepatch | prerelease | x.x.x]`]]
+      });
+
       @Command.String({ required: true })
       lernaVersionBump: string = "BUMP";
 
@@ -159,6 +166,7 @@ export interface MyProjectTaskContext extends BaseProjectContext {
 }
 
 export interface MyProjectTasks extends BaseProjectTasks<MyProjectTaskContext> {
+  clean: any;
   typescriptCompile: any;
   tsconfigGen: HarkJsonFilesProps<TsconfigData>;
   tsconfigData: TsconfigData;
@@ -171,6 +179,9 @@ export interface MyProjectTasks extends BaseProjectTasks<MyProjectTaskContext> {
 export class MyProject extends Project<MyProjectTaskContext, MyProjectTasks> {
   constructor(options: BaseProjectOptions) {
     super(options);
+
+    // clean
+    this.registerTask("clean", () => plugin.warn("Nothing to do apparently"));
 
     // buildRoot
     this.registerTask("buildRoot", (gc) =>

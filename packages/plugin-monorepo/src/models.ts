@@ -1,7 +1,6 @@
 import { HarkDataFilesProps, Path, PortablePath } from "@hark/plugin";
 import { HarkTaskGroupTasks } from "@hark/task-group";
 import { Observable } from "rxjs";
-import { Monorepo } from "./monorepo";
 import { Project } from "./project";
 import { ProjectGroup } from "./project-group";
 

@@ -89,10 +89,6 @@ export function generateTsconfigFile(options: {
 }
 
 function generateHash(input: string, truncate: number = Number.POSITIVE_INFINITY): string {
-  let hash = crypto
-    .createHash("sha1")
-    .update(input)
-    .digest("hex")
-    .substring(0, truncate);
+  let hash = crypto.createHash("sha1").update(input).digest("hex").substring(0, truncate);
   return hash;
 }

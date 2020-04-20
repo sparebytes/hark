@@ -1,6 +1,6 @@
 {
   "name": "@hark/plugin-find-or-watch",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "🔍 Find files using glob patterns",
   "keywords": "tasks, runner, glob, hark, hark-plugin",
   "license": "MIT",
@@ -8,9 +8,9 @@
   "main": "src/index.ts",
   "dependencies": {
     "@babel/runtime": "^7.8.4",
-    "@hark/plugin": "^0.9.1",
-    "@hark/plugin-find": "^0.9.1",
-    "@hark/plugin-watch": "^0.9.1",
+    "@hark/plugin": "^0.10.0",
+    "@hark/plugin-find": "^0.10.0",
+    "@hark/plugin-watch": "^0.10.0",
     "globby": "^11.0.0"
   },
   "peerDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@hark/plugin-read",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "📖 Read files content",
   "keywords": "tasks, runner, hark, hark-plugin",
   "license": "MIT",
@@ -8,7 +8,7 @@
   "main": "src/index.ts",
   "dependencies": {
     "@babel/runtime": "^7.8.4",
-    "@hark/plugin": "^0.9.1",
+    "@hark/plugin": "^0.10.0",
     "pifs": "^1.0.0"
   },
   "devDependencies": {

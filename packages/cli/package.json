@@ -1,6 +1,6 @@
 {
   "name": "@hark/cli",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "license": "MIT",
   "main": "src/index.ts",
   "bin": {
@@ -8,11 +8,11 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.8.4",
-    "@hark/plugin": "^0.9.1",
-    "@hark/plugin-monorepo": "^0.9.1",
-    "@hark/plugin-package-json-format": "^0.9.1",
-    "@hark/reporter-verbose": "^0.9.1",
-    "@hark/task-group": "^0.9.1",
+    "@hark/plugin": "^0.10.0",
+    "@hark/plugin-monorepo": "^0.10.0",
+    "@hark/plugin-package-json-format": "^0.10.0",
+    "@hark/reporter-verbose": "^0.10.0",
+    "@hark/task-group": "^0.10.0",
     "chalk": "3.0.0",
     "clipanion": "^2.1.6",
     "import-local": "~3.0.2"

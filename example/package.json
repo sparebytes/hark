@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "hark-example",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "scripts": {
     "hark": "node ./bootstrap-hark-example.js",
     "hark:debug": "node --inspect=127.0.0.1:44445 --inspect-brk ./bootstrap-hark.js"

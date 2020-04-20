@@ -117,6 +117,9 @@ export default extendCli<HarkMonorepoCommandContext<MyMonorepo>, HarkMonorepoCom
       @Command.String({ required: true })
       lernaVersionBump: string = "BUMP";
 
+      @Command.Boolean("--skip-prepare")
+      skipPrepare: boolean = false;
+
       @Command.Boolean("--yes")
       yes: boolean = false;
 
@@ -138,7 +141,7 @@ export default extendCli<HarkMonorepoCommandContext<MyMonorepo>, HarkMonorepoCom
                       stdio: "inherit",
                     }),
                 last(),
-                theMonorepo.getProject("root").task.prepare(),
+                this.skipPrepare ? plugin.log("Skipping prepare") : theMonorepo.getProject("root").task.prepare(),
                 spawn.sync(["lerna", "publish", "from-package", "--contents", "dist", ...yesArgs], {
                   stdio: "inherit",
                 }),

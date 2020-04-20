@@ -8,7 +8,10 @@ export interface HarkCliInitOptions {
 export interface HarkCliStartOptions<T extends Partial<BaseContext>> extends HarkCliInitOptions {
   context: T;
   harkfilePath?: string;
-  registerBabelOptions?: null | any;
+  registerBabelOptions?: null | {
+    extensions: string[];
+    [k:string]: unknown;
+  };
 }
 
 export type CliCommandRegisterDecorator = (commandClass: CommandClass<any>) => void;

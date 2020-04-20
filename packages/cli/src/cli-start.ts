@@ -6,7 +6,7 @@ import { HarkCliStartOptions, HarkfileFunction } from "./models";
 
 export async function cliStart<T>(args: string[], options?: HarkCliStartOptions<T>) {
   const cliVars = await cliInit(options);
-  const extensions: string[] = options?.registerBabelOptions ?? [
+  const extensions: string[] = options?.registerBabelOptions?.extensions ?? [
     //
     ".ts",
     ".tsx",

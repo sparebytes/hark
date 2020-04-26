@@ -1,6 +1,6 @@
 {
   "name": "@hark/plugin-monorepo",
-  "version": "0.11.3",
+  "version": "0.11.4",
   "description": "🐣 Spawn new child process",
   "keywords": "tasks, runner, hark, hark-plugin, monorepo",
   "license": "MIT",

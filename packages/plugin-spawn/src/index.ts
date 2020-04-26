@@ -93,6 +93,7 @@ export const spawn = <I>(cli: string[] | string, userOptions?: HarkSpawnOptions)
             env: {
               FORCE_COLOR: "1",
             },
+            preferLocal: true,
             ...options.execa,
             stdout: "pipe",
             stderr: "pipe",

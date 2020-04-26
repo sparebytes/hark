@@ -105,6 +105,7 @@ export const spawnTsc = <I>(userOptions?: HarkSpawnTscOptions) => {
           ...options.spawnOptions,
           eventFilter: (event) => true,
           execa: {
+            preferLocal: true,
             ...options.spawnOptions?.execa,
             stdout: "inherit",
             stderr: "inherit",

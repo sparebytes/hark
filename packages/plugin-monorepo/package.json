@@ -1,6 +1,6 @@
 {
   "name": "@hark/plugin-monorepo",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "🐣 Spawn new child process",
   "keywords": "tasks, runner, hark, hark-plugin, monorepo",
   "license": "MIT",
@@ -8,15 +8,15 @@
   "main": "src/index.ts",
   "dependencies": {
     "@babel/runtime": "^7.8.4",
-    "@hark/plugin": "^0.10.0",
-    "@hark/plugin-find": "^0.10.0",
-    "@hark/plugin-find-or-watch": "^0.10.0",
-    "@hark/plugin-json-parse": "^0.10.0",
-    "@hark/plugin-overwrite": "^0.10.0",
-    "@hark/plugin-package-json-format": "^0.10.0",
-    "@hark/plugin-package-json-load": "^0.10.0",
-    "@hark/plugin-read": "^0.10.0",
-    "@hark/task-group": "^0.10.0",
+    "@hark/plugin": "^0.11.0",
+    "@hark/plugin-find": "^0.11.0",
+    "@hark/plugin-find-or-watch": "^0.11.0",
+    "@hark/plugin-json-parse": "^0.11.0",
+    "@hark/plugin-overwrite": "^0.11.0",
+    "@hark/plugin-package-json-format": "^0.11.0",
+    "@hark/plugin-package-json-load": "^0.11.0",
+    "@hark/plugin-read": "^0.11.0",
+    "@hark/task-group": "^0.11.0",
     "builtin-modules": ">=3.1.0"
   },
   "peerDependencies": {

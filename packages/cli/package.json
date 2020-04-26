@@ -1,6 +1,6 @@
 {
   "name": "@hark/cli",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "license": "MIT",
   "main": "src/index.ts",
   "bin": {
@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.8.4",
-    "@hark/reporter-verbose": "^0.10.0",
+    "@hark/reporter-verbose": "^0.11.0",
     "import-local": "~3.0.2"
   },
   "peerDependencies": {

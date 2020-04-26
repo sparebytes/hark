@@ -1,6 +1,6 @@
 {
   "name": "@hark/plugin-watch",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "👀 Watch for new or changed files matched by glob patterns",
   "keywords": "tasks, runner, hark, hark-plugin, watch",
   "license": "MIT",
@@ -8,7 +8,7 @@
   "main": "src/index.ts",
   "dependencies": {
     "@babel/runtime": "^7.8.4",
-    "@hark/plugin": "^0.10.0",
+    "@hark/plugin": "^0.11.0",
     "chokidar": "^3.3.1"
   },
   "peerDependencies": {

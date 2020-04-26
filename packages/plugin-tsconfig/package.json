@@ -1,6 +1,6 @@
 {
   "name": "@hark/plugin-tsconfig",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Spawn new tsc child process",
   "keywords": "tasks, runner, hark, hark-plugin, typescript, tsconfig",
   "license": "MIT",
@@ -8,7 +8,7 @@
   "main": "src/index.ts",
   "dependencies": {
     "@babel/runtime": "^7.8.4",
-    "@hark/plugin": "^0.10.0"
+    "@hark/plugin": "^0.11.0"
   },
   "peerDependencies": {
     "rxjs": ">=6"

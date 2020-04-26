@@ -1,6 +1,6 @@
 {
   "name": "@hark/plugin-yaml-parse",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Parse yaml files",
   "keywords": "tasks, runner, hark, hark-plugin",
   "license": "MIT",
@@ -8,7 +8,7 @@
   "main": "src/index.ts",
   "dependencies": {
     "@babel/runtime": "^7.8.4",
-    "@hark/plugin": "^0.10.0",
+    "@hark/plugin": "^0.11.0",
     "js-yaml": "^3.13.1"
   },
   "devDependencies": {

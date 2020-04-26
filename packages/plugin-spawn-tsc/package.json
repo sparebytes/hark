@@ -1,6 +1,6 @@
 {
   "name": "@hark/plugin-spawn-tsc",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Spawn new tsc child process",
   "keywords": "tasks, runner, hark, hark-plugin, typescript, tsc",
   "license": "MIT",
@@ -8,8 +8,8 @@
   "main": "src/index.ts",
   "dependencies": {
     "@babel/runtime": "^7.8.4",
-    "@hark/plugin": "^0.10.0",
-    "@hark/plugin-spawn": "^0.10.0",
+    "@hark/plugin": "^0.11.0",
+    "@hark/plugin-spawn": "^0.11.0",
     "strip-ansi": "^6.0.0"
   },
   "peerDependencies": {

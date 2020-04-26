@@ -10,7 +10,7 @@ export interface HarkCliStartOptions<T extends Partial<BaseContext>> extends Har
   harkfilePath?: string;
   registerBabelOptions?: null | {
     extensions: string[];
-    [k:string]: unknown;
+    [k: string]: unknown;
   };
 }
 
@@ -20,5 +20,4 @@ import { BaseContext, Cli, CommandClass } from "clipanion";
 
 export type HarkfileFunction<CliContext, ReturnContext> = (input: {
   cli: Cli<CliContext & BaseContext>;
-  cliRegister: CliCommandRegisterDecorator;
 }) => Promise<ReturnContext> | ReturnContext;

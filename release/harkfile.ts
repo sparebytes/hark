@@ -32,9 +32,9 @@ export abstract class ACommand extends HarkMonorepoCommand<AMonorepo, "version">
   }
 }
 
-export default extendCli(async ({ cli, cliRegister }) => {
+export default extendCli(async ({ cli }) => {
   return {
-    ...(await cliExtendMonorepo(ACommand)({ cli, cliRegister })),
+    ...(await cliExtendMonorepo(ACommand)({ cli })),
     monorepo: monorepo(
       ["packages/*/dist"],
       plugin.map(({ packages }) => new AMonorepo(packages.map((p) => new APackage(p.packageJson.name, p.path)))),

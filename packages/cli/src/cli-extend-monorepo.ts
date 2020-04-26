@@ -6,7 +6,7 @@ import { HarkMonorepoCommand, HarkMonorepoCommandClass, HarkMonorepoCommandConte
 export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BaseProjectTasks<BaseProjectContext>>>(
   commandClass: HarkMonorepoCommandClass,
 ) =>
-  extendCli<any, HarkMonorepoCommandContext<M>>(async ({ cliRegister }) => {
+  extendCli<any, HarkMonorepoCommandContext<M>>(async ({ cli }) => {
     const { Command } = await import("clipanion");
     const { of } = await import("rxjs");
     const { switchMap, tap } = await import("rxjs/operators");
@@ -15,7 +15,6 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
       Monorepo<BaseProjectContext, BaseProjectTasks<BaseProjectContext>>
     > {}
 
-    @cliRegister
     class CleanCommand extends BaseCommand {
       @Command.Rest()
       projects: string[] = [];
@@ -36,7 +35,6 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
       }
     }
 
-    @cliRegister
     class FormatCommand extends BaseCommand {
       @Command.Rest()
       projects: string[] = [];
@@ -57,7 +55,6 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
       }
     }
 
-    @cliRegister
     class TaskCommand extends BaseCommand {
       @Command.Boolean("-w,--watch")
       watchMode: boolean = false;
@@ -107,7 +104,6 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
       }
     }
 
-    @cliRegister
     class BuildCommand extends BaseCommand {
       @Command.Boolean("-w,--watch")
       watchMode: boolean = false;
@@ -131,7 +127,6 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
       }
     }
 
-    @cliRegister
     class PackageJsonFormatCommand extends BaseCommand {
       @Command.Rest()
       projects: string[] = [];
@@ -152,7 +147,6 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
       }
     }
 
-    @cliRegister
     class ImportsCheckCommand extends BaseCommand {
       @Command.Boolean("--json")
       jsonOutput = false;
@@ -215,7 +209,6 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
       }
     }
 
-    @cliRegister
     class DevCommand extends BaseCommand {
       @Command.Rest()
       projects: string[] = [];
@@ -235,6 +228,14 @@ export const cliExtendMonorepo = <M extends Monorepo<BaseProjectContext, BasePro
         return 0;
       }
     }
+
+    cli.register(CleanCommand);
+    cli.register(FormatCommand);
+    cli.register(TaskCommand);
+    cli.register(BuildCommand);
+    cli.register(PackageJsonFormatCommand);
+    cli.register(ImportsCheckCommand);
+    cli.register(DevCommand);
 
     const result: HarkMonorepoCommandContext<M> = {
       monorepo: plugin.throwError("Monorepo not given."),

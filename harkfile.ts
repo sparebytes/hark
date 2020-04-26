@@ -90,8 +90,7 @@ export abstract class BaseCommand extends HarkMonorepoCommand<
 }
 
 export default extendCli<HarkMonorepoCommandContext<MyMonorepo>, HarkMonorepoCommandContext<MyMonorepo>>(
-  async ({ cli, cliRegister }) => {
-    @cliRegister
+  async ({ cli }) => {
     class PrepareCommand extends BaseCommand {
       @Command.Path("prepare")
       async execute() {
@@ -106,7 +105,6 @@ export default extendCli<HarkMonorepoCommandContext<MyMonorepo>, HarkMonorepoCom
       }
     }
 
-    @cliRegister
     class PublishCommand extends BaseCommand {
       static usage = Command.Usage({
         category: "Distribute",
@@ -154,8 +152,11 @@ export default extendCli<HarkMonorepoCommandContext<MyMonorepo>, HarkMonorepoCom
       }
     }
 
+    cli.register(PrepareCommand);
+    cli.register(PublishCommand);
+
     return {
-      ...(await cliExtendMonorepo(BaseCommand)({ cli, cliRegister })),
+      ...(await cliExtendMonorepo(BaseCommand)({ cli })),
       monorepo: myMonorepoPlugin,
     };
   },

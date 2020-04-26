@@ -1,4 +1,4 @@
-import reporterVerbose from "@hark/reporter-verbose/src";
+import reporterVerbose from "@hark/reporter-verbose";
 import { promises as fsp } from "fs";
 import * as _path from "path";
 import { HarkCliStartOptions, HarkfileCliFn } from "./models";

@@ -1,4 +1,4 @@
-import { HarkPlugin, npath, plugin, PortablePath } from "@hark/plugin";
+import { HarkDataFilesProps, HarkPlugin, npath, plugin, PortablePath } from "@hark/plugin";
 import { find } from "@hark/plugin-find";
 import { findOrWatch } from "@hark/plugin-find-or-watch";
 import { overwrite } from "@hark/plugin-overwrite";
@@ -193,7 +193,7 @@ export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTask
         //
         this.task.sourceFiles(
           plugin.pipe(
-            plugin.of([]),
+            plugin.of({ files: [] } as HarkDataFilesProps),
             plugin.warn(`Warning: "sourceFiles" task is not implemented for project ${this.name}. Returning none.`),
           ),
         ),

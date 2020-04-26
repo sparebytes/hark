@@ -199,6 +199,33 @@ export function makeHarkMonorepoCommands<I, C extends BaseProjectContext, T exte
     }
   }
 
+  class ProjectsListCommand extends HarkMonorepoBaseCommand {
+    static usage = Command.Usage({
+      description: `List all detected packages`,
+    });
+
+    @Command.Rest()
+    projects: string[] = [];
+
+    @Command.Path("projects", "list")
+    async execute() {
+      const { default: chalk } = await import("chalk");
+      await rootMonad
+        .pipe(
+          map((c) => ({ ...c, watchMode: false })),
+          monorepoBuilder,
+          tap((theMonorepo) => {
+            const projects = theMonorepo.filterProjectsByAny(this.projects, allProjectsFilter).allProjects();
+            for (const project of projects) {
+              console["log"](chalk.blue(project.name), chalk.gray(project.path || ""));
+            }
+          }),
+        )
+        .toPromise();
+      return 0;
+    }
+  }
+
   class ImportsCheckCommand extends HarkMonorepoBaseCommand {
     static usage = Command.Usage({
       description: `*Experimental* Checks for between package.json dependencies and imports from source code`,
@@ -297,6 +324,7 @@ export function makeHarkMonorepoCommands<I, C extends BaseProjectContext, T exte
     TaskCommand,
     BuildCommand,
     PackageJsonFormatCommand,
+    ProjectsListCommand,
     ImportsCheckCommand,
     DevCommand,
   };

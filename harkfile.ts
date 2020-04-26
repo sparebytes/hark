@@ -132,6 +132,7 @@ export const runCli = makeCli((args: string[], { reporter }) => {
       TaskCommand,
       BuildCommand,
       PackageJsonFormatCommand,
+      ProjectsListCommand,
       ImportsCheckCommand,
       DevCommand,
     },
@@ -145,6 +146,7 @@ export const runCli = makeCli((args: string[], { reporter }) => {
   cli.register(TaskCommand);
   cli.register(BuildCommand);
   cli.register(PackageJsonFormatCommand);
+  cli.register(ProjectsListCommand);
   cli.register(ImportsCheckCommand);
   cli.register(DevCommand);
 

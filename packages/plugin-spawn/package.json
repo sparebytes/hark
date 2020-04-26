@@ -1,6 +1,6 @@
 {
   "name": "@hark/plugin-spawn",
-  "version": "0.11.0",
+  "version": "0.11.5",
   "description": "🐣 Spawn new child process",
   "keywords": "tasks, runner, hark, hark-plugin, spawn",
   "license": "MIT",

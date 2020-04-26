@@ -1,6 +1,6 @@
 {
   "name": "@hark/opinionated",
-  "version": "0.11.1",
+  "version": "0.11.3",
   "license": "MIT",
   "main": "src/index.ts",
   "bin": {
@@ -9,7 +9,7 @@
   "dependencies": {
     "@babel/runtime": "^7.8.4",
     "@hark/plugin": "^0.11.0",
-    "@hark/plugin-monorepo": "^0.11.0",
+    "@hark/plugin-monorepo": "^0.11.3",
     "@hark/plugin-package-json-format": "^0.11.0",
     "@hark/reporter-verbose": "^0.11.0",
     "@hark/task-group": "^0.11.0",

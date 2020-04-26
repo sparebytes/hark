@@ -1,3 +1,4 @@
+import { TransformOptions } from "@babel/core";
 import { makeCli } from "@hark/cli";
 import { HarkMonorepoBaseCommand, makeHarkMonorepoCommands } from "@hark/clipanion";
 import { copyPackageJson, opinionatedFactory, OpinionatedProjectTaskContext, OpinionatedProjectTasks } from "@hark/opinionated";
@@ -12,7 +13,13 @@ import { last, map } from "rxjs/operators";
 interface MyTaskContext extends OpinionatedProjectTaskContext {}
 interface MyTasks extends OpinionatedProjectTasks {}
 
-const { MyProject, MyPackage, MyRootProject, MyMonorepo } = opinionatedFactory<MyTaskContext, MyTasks>({
+const {
+  //
+  MyProject,
+  MyPackage,
+  MyRootProject,
+  MyMonorepo,
+} = opinionatedFactory<MyTaskContext, MyTasks>({
   project() {},
 
   package() {
@@ -64,9 +71,16 @@ const { MyProject, MyPackage, MyRootProject, MyMonorepo } = opinionatedFactory<M
 export const monorepoBuilder = monorepoBuilderPlugin(
   ["packages/*"],
   plugin.map(({ packages }) => {
+    const babelOptions: TransformOptions = {
+      babelrc: false,
+      sourceMaps: true,
+      comments: true,
+      rootMode: "upward",
+    };
+
     const packageProjects = packages.map((p) => {
       const name = p.packageJson.name;
-      const myPackage = new MyPackage(name, p.path);
+      const myPackage = new MyPackage(name, p.path, { babelOptions });
       if (name.startsWith("@hark/")) {
         myPackage.addTag(name.substr("@hark/".length));
       }
@@ -111,12 +125,62 @@ export const runCli = makeCli((args: string[], { reporter }) => {
   cli.register(HelpCommand);
 
   // Monorepo - CLI
-  makeHarkMonorepoCommands({
+  const {
+    commands: {
+      CleanCommand,
+      // FormatCommand,
+      TaskCommand,
+      BuildCommand,
+      PackageJsonFormatCommand,
+      ImportsCheckCommand,
+      DevCommand,
+    },
+  } = makeHarkMonorepoCommands({
     monorepoBuilder,
     rootMonad,
-    autoRegisterCommands: true,
-    cli,
+    autoRegisterCommands: false,
   });
+  cli.register(CleanCommand);
+  // cli.register(FormatCommand);
+  cli.register(TaskCommand);
+  cli.register(BuildCommand);
+  cli.register(PackageJsonFormatCommand);
+  cli.register(ImportsCheckCommand);
+  cli.register(DevCommand);
+
+  class FormatCommand extends HarkMonorepoBaseCommand {
+    static usage = Command.Usage({
+      description: `Formats code`,
+    });
+
+    @Command.Rest()
+    projects: string[] = [];
+
+    @Command.Path("format")
+    async execute() {
+      await rootMonad
+        .pipe(
+          map((c) => ({ ...c, watchMode: false })),
+          monorepoBuilder,
+          plugin.switchMake((theMonorepo) =>
+            plugin.pipe(
+              //
+              spawn(["organize-imports-cli", "tsconfig.json"]),
+              plugin.of(theMonorepo),
+            ),
+          ),
+          plugin.switchMake((theMonorepo) =>
+            theMonorepo
+              .filterProjectsByAny(this.projects, "*")
+              .tasks.format(plugin.warn("format task not defined."))
+              .combineLatestArray(),
+          ),
+        )
+        .toPromise();
+      return 0;
+    }
+  }
+  cli.register(FormatCommand);
 
   class PrepareCommand extends HarkMonorepoBaseCommand {
     @Command.Path("prepare")

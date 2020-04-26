@@ -1,6 +1,8 @@
+import { TransformOptions } from "@babel/core";
 import { npath, plugin, PortablePath, ppath } from "@hark/plugin";
 import { find } from "@hark/plugin-find";
 import { remove } from "@hark/plugin-remove";
+import { spawn } from "@hark/plugin-spawn";
 import { of } from "rxjs";
 import { map } from "rxjs/operators";
 import { OpinionatedProjectTaskContext, OpinionatedProjectTasks } from "./models";
@@ -21,9 +23,19 @@ export class OpinionatedPackage<
       distDir = "dist",
       outDir = `${distDir}/lib`,
       tsconfigExtends,
-    }: { srcDir?: string; outDir?: string; distDir?: string; tsconfigExtends?: string } = {},
+      babelOptions,
+    }: { srcDir?: string; outDir?: string; distDir?: string; tsconfigExtends?: string; babelOptions?: TransformOptions } = {},
   ) {
     super({ name, path, sourcePaths$: of([`${path}/${srcDir}/**/*.ts`, `!**/*.test.ts`]) });
+
+    // format
+    this.registerTask("format", () =>
+      plugin.pipe(
+        //
+        this.task.sourcePaths(plugin.of([])),
+        plugin.switchMake((paths) => spawn(["prettier", "--write", ...paths], { logCommand: false })),
+      ),
+    );
 
     // clean
     this.registerTask("clean", () =>
@@ -36,7 +48,7 @@ export class OpinionatedPackage<
 
     // babelTranspileSelf
     this.registerTask("babelTranspileSelf", (gc) =>
-      transpile({ watchMode: gc.watchMode, srcDir: `${path}/${srcDir}`, outDir: `${path}/${outDir}`, comments: true }),
+      transpile({ watchMode: gc.watchMode, srcDir: `${path}/${srcDir}`, outDir: `${path}/${outDir}`, babelOptions }),
     );
 
     // tsconfigExportedPaths

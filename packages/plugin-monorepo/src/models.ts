@@ -1,4 +1,4 @@
-import { HarkDataFilesProps, Path, PortablePath } from "@hark/plugin";
+import { HarkDataFilesProps, HarkFilesProps, Path, PortablePath } from "@hark/plugin";
 import { HarkTaskGroupTasks } from "@hark/task-group";
 import { Observable } from "rxjs";
 import { Project } from "./project";
@@ -39,6 +39,7 @@ export interface BaseProjectTasks extends HarkTaskGroupTasks {
   buildSelf: any;
   buildDependencies: any;
   sourcePaths: PortablePath[];
+  sourceFiles: HarkFilesProps;
   readSource: HarkDataFilesProps;
   collectImports: string[];
   compareImportsToPackageJson: PackageJsonAndImportComparison[];

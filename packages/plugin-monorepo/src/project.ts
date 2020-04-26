@@ -170,18 +170,33 @@ export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTask
       ),
     );
 
+    // sourceFiles
+    this.registerTask(
+      "sourceFiles",
+      (gc) =>
+        plugin.pipe(
+          //
+          this.task.sourcePaths(
+            plugin.pipe(
+              plugin.of([]),
+              plugin.warn(`Warning: "sourcePaths" task is not implemented for project ${this.name}. Returning none.`),
+            ),
+          ),
+          plugin.switchMake((sourcePaths) => findOrWatch(gc.watchMode, sourcePaths)),
+        ),
+      { cache: false },
+    );
+
     // readSource
     this.registerTask("readSource", (gc) =>
       plugin.pipe(
         //
-        this.getTask(
-          "sourcePaths",
+        this.task.sourceFiles(
           plugin.pipe(
             plugin.of([]),
-            plugin.warn(`Warning: "sourcePaths" task is not implemented for project ${this.name}. Returning none.`),
+            plugin.warn(`Warning: "sourceFiles" task is not implemented for project ${this.name}. Returning none.`),
           ),
         ),
-        plugin.switchMake((sourcePaths) => findOrWatch(gc.watchMode, sourcePaths)),
         read(),
       ),
     );

@@ -1,6 +1,6 @@
 import { HarkMonad, HarkPlugin, plugin } from "@hark/plugin";
 import { BaseProjectContext, BaseProjectTasks, Monorepo } from "@hark/plugin-monorepo";
-import { BaseContext, Cli, Command } from "clipanion";
+import { BaseContext, Cli, Command, CommandClass } from "clipanion";
 import { map, tap } from "rxjs/operators";
 
 export abstract class HarkBaseCommand<Context extends BaseContext = BaseContext> extends Command<Context> {}
@@ -308,6 +308,5 @@ export function makeHarkMonorepoCommands<I, C extends BaseProjectContext, T exte
     Object.values(commands).forEach((C) => cli.register(C));
   }
 
-  const result = { CleanCommand };
-  return (result as unknown) as { [K in keyof typeof result]: Command };
+  return { commands: (commands as unknown) as { [K in keyof typeof commands]: CommandClass<any> } };
 }

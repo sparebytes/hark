@@ -28,12 +28,12 @@ export interface BaseProjectContext {
   watchMode: boolean;
 }
 
-export interface BaseProjectTasks<C extends BaseProjectContext> extends HarkTaskGroupTasks {
+export interface BaseProjectTasks extends HarkTaskGroupTasks {
   packageJson: Record<string, any>;
   packageJsonFormat: Record<string, HarkDataFilesProps>;
   monorepoDependencies: Record<string, MonorepoDependency>;
   dependencyFilters: ProjectGroupFilters;
-  dependencyProjects: ProjectGroup<C, this>;
+  dependencyProjects: ProjectGroup<BaseProjectContext, BaseProjectTasks>;
   buildRoot: any;
   build: any;
   buildSelf: any;

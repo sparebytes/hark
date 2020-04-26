@@ -7,20 +7,18 @@ import { Project } from "./project";
 const projectFilterRegex = /^(!?)(\w+)\:(.+)$/;
 const projectFilterBeginsWithExclamation = /^!/;
 
-export class ProjectGroup<C extends BaseProjectContext, TASKS extends BaseProjectTasks<C>> {
+export class ProjectGroup<C extends BaseProjectContext, TASKS extends BaseProjectTasks> {
   readonly projects = new Map<string, Project<C, TASKS>>();
   constructor(projects: Iterable<Project<C, TASKS>>) {
     this.addProjects(Array.from(projects));
   }
-  addProject(project: Project<C, TASKS>): this {
+  addProject(project: Project<C, TASKS>): void {
     this.projects.set(project.name, project as Project<C, TASKS>);
-    return this;
   }
-  addProjects(projects: Project<C, TASKS>[]): this {
+  addProjects(projects: Project<C, TASKS>[]): void {
     for (const project of projects) {
       this.addProject(project);
     }
-    return this;
   }
   allProjects(): Project<C, TASKS>[] {
     return [...this.projects.values()];

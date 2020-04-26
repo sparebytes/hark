@@ -52,7 +52,7 @@ export class HarkTaskGroup<C extends {}, TASKS extends HarkTaskGroupTasks> {
       scope: boolean;
       resetTrace: boolean;
     }>,
-  ): this /* HarkTaskGroup<C, TASKS & { [K in N]: R }> */ {
+  ): void /* HarkTaskGroup<C, TASKS & { [K in N]: R }> */ {
     const options = userOptions ?? {};
     const cache = options.cache ?? true;
     const scope = options.scope ?? true;
@@ -72,7 +72,6 @@ export class HarkTaskGroup<C extends {}, TASKS extends HarkTaskGroupTasks> {
       cache ? pipe(publishReplay(), refCount()) : plugin.noop(),
     );
     this.taskRegistry.set(taskName, task$);
-    return this;
   }
 
   getTaskObservable<N extends string, R = TASKS[N], F = TASKS[N]>(taskName: N, fallback?: Observable<F>): Observable<R | F> {
@@ -117,13 +116,12 @@ export class HarkTaskGroup<C extends {}, TASKS extends HarkTaskGroupTasks> {
       <F>(fallbackPlugin?: HarkPlugin<any, F>): HarkPlugin<any, TASKS[K] | F>;
     };
   } = new Proxy(this, taskProxyHandler) as any;
-  setTaskContext(taskContext$: HarkMonad<C>): this {
+  setTaskContext(taskContext$: HarkMonad<C>) {
     this.taskGroupContextDefered.resolve(taskContext$);
     return this;
   }
-  ready(): this {
+  ready() {
     this.readyDefered.resolve();
-    return this;
   }
 }
 

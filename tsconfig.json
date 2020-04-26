@@ -6,5 +6,5 @@
       "@hark/*": ["packages/*"]
     }
   },
-  "include": ["harkfile.ts", "./src", "packages/*/src", "example/*.ts", "example/*/*.ts"]
+  "include": ["*.ts", "./src", "packages/*/src", "example/*.ts", "example/*/*.ts"]
 }

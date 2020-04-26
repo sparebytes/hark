@@ -2,6 +2,11 @@
   "private": true,
   "name": "hark-root-monorepo",
   "version": "0.10.1",
+  "author": "Kir Belevich <kir@belevi.ch> (https://github.com/deepsweet)",
+  "contributors": [
+    "Franklin Davenport"
+  ],
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/sparebytes/hark.git"
@@ -11,11 +16,7 @@
     "hark:debug": "node --inspect=127.0.0.1:44444 --inspect-brk ./bootstrap-hark.js",
     "example": "cd example && yarn",
     "tsc": "tsc",
-    "test": "jest",
-    "publish:packages": "lerna publish from-package --contents dist",
-    "e0": "rimraf a/b/*.tsbuildinfo .build.cache/.tsconfig/*.tsbuildinfo packages/*/dist && rimraf packages/a packages/.build.cache",
-    "e1": "yarn run e0 && tsc -b a/b/tsconfig_root_98af3b.json",
-    "e2": "yarn run e0 && tsc -b .build.cache/tsconfig/tsconfig_root_98af3b.json"
+    "test": "jest"
   },
   "workspaces": [
     ".",
@@ -25,7 +26,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.8.4",
-    "clipanion": "^2.1.6",
+    "clipanion": "^2.3.1",
     "core-js": "^3.6.0",
     "core-js-pure": "^3.6.0",
     "pifs": "^1.0.0",

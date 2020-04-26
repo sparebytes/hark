@@ -19,8 +19,8 @@ import { Monorepo } from "./monorepo";
 import { ProjectGroup } from "./project-group";
 
 const builtinModules = new Set(builtinModulesArray);
-export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTasks<C>> extends HarkTaskGroup<C, TASKS> {
-  protected _monorepo?: Monorepo<C, TASKS>;
+export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTasks> extends HarkTaskGroup<C, TASKS> {
+  private _monorepo?: Monorepo<C, TASKS>;
   get monorepo(): Monorepo<C, TASKS> {
     const v = this._monorepo;
     if (v == null) {
@@ -220,15 +220,14 @@ export class Project<C extends BaseProjectContext, TASKS extends BaseProjectTask
     return this.tags.has(tag);
   }
 
-  addTag(...tags: (string | symbol)[]): this {
-    return this.addTags(tags);
+  addTag(...tags: (string | symbol)[]) {
+    this.addTags(tags);
   }
 
-  addTags(tags: Iterable<string | symbol>): this {
+  addTags(tags: Iterable<string | symbol>) {
     for (const tag of tags) {
       this.tags.add(tag);
     }
-    return this;
   }
 
   withDependencies<I, O>(callback: (projectGroup: ProjectGroup<C, TASKS>) => HarkPlugin<I, O>): HarkPlugin<I, O> {

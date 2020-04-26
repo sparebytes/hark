@@ -6,7 +6,7 @@ export interface AProjectTaskContext extends BaseProjectContext {
   version: string;
 }
 
-export interface AProjectTasks extends BaseProjectTasks<AProjectTaskContext> {}
+export interface AProjectTasks extends BaseProjectTasks {}
 
 export class AProject extends Project<AProjectTaskContext, AProjectTasks> {
   constructor(options: BaseProjectOptions) {

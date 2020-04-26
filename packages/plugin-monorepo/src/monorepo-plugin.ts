@@ -7,7 +7,7 @@ import { Monorepo } from "./monorepo";
 
 export type ProjectFactoryPackageInfo = { path: string; packageJson: { name: string; [k: string]: unknown } };
 
-export const monorepo = <M extends Monorepo<any, any>>(
+export const monorepoBuilderPlugin = <M extends Monorepo<any, any>>(
   pathGlobs: string[],
   monorepoFactory: HarkPlugin<{ packages: ProjectFactoryPackageInfo[] }, M>,
 ) =>
@@ -32,10 +32,11 @@ export const monorepo = <M extends Monorepo<any, any>>(
         }),
         monorepoFactory,
         tap((theMonorepo) => {
-          theMonorepo.setTaskContext(monad$).ready();
+          theMonorepo.setTaskContext(monad$);
+          theMonorepo.ready();
         }),
       ),
     ),
   );
 
-export default monorepo;
+export default monorepoBuilderPlugin;

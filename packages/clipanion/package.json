@@ -1,5 +1,5 @@
 {
-  "name": "@hark/cli",
+  "name": "@hark/clipanion",
   "version": "0.10.1",
   "license": "MIT",
   "main": "src/index.ts",
@@ -8,11 +8,17 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.8.4",
+    "@hark/plugin": "^0.10.0",
+    "@hark/plugin-monorepo": "^0.10.0",
+    "@hark/plugin-package-json-format": "^0.10.0",
     "@hark/reporter-verbose": "^0.10.0",
-    "import-local": "~3.0.2"
+    "@hark/task-group": "^0.10.0",
+    "chalk": "3.0.0",
+    "clipanion": "^2.3.1"
   },
   "peerDependencies": {
-    "@babel/register": "*"
+    "@babel/register": "*",
+    "rxjs": ">=6"
   },
   "peerDependenciesMeta": {
     "@babel/register": {

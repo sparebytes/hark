@@ -1,23 +1,16 @@
-export interface HarkCliInitOptions {
-  binaryLabel?: string;
-  binaryName?: string;
-  binaryVersion?: string;
-  useDefaultHelpCommand?: boolean;
+export interface HarkfileCliFn {
+  (args: string[], options: { reporter: NodeJS.EventEmitter }): Promise<number>;
 }
 
-export interface HarkCliStartOptions<T extends Partial<BaseContext>> extends HarkCliInitOptions {
-  context: T;
+export function makeCli(callback: HarkfileCliFn) {
+  return callback;
+}
+
+export interface HarkCliStartOptions {
   harkfilePath?: string;
+  defaultLogLevel?: number;
   registerBabelOptions?: null | {
     extensions: string[];
     [k: string]: unknown;
   };
 }
-
-export type CliCommandRegisterDecorator = (commandClass: CommandClass<any>) => void;
-
-import { BaseContext, Cli, CommandClass } from "clipanion";
-
-export type HarkfileFunction<CliContext, ReturnContext> = (input: {
-  cli: Cli<CliContext & BaseContext>;
-}) => Promise<ReturnContext> | ReturnContext;

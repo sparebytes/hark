@@ -16,6 +16,7 @@ export interface TsconfigData {
     incremental?: boolean;
     composite?: boolean;
     tsBuildInfoFile?: string;
+    paths?: Record<string, string[]>;
     [k: string]: unknown;
   };
   files?: string[];

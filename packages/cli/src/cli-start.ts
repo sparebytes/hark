@@ -1,11 +1,9 @@
-import { BaseContext } from "clipanion/lib/advanced";
+import reporterVerbose from "@hark/reporter-verbose/src";
 import { promises as fsp } from "fs";
 import * as _path from "path";
-import { cliInit } from "./cli-init";
-import { HarkCliStartOptions, HarkfileFunction } from "./models";
+import { HarkCliStartOptions, HarkfileCliFn } from "./models";
 
-export async function cliStart<T>(args: string[], options?: HarkCliStartOptions<T>) {
-  const cliVars = await cliInit(options);
+export async function cliStart(args: string[], options?: HarkCliStartOptions) {
   const extensions: string[] = options?.registerBabelOptions?.extensions ?? [
     //
     ".ts",
@@ -45,33 +43,37 @@ export async function cliStart<T>(args: string[], options?: HarkCliStartOptions<
     throw new Error(`\nNo harkfile detected at any of these paths:\n- ` + possibleHarkfiles.join("- \n"));
   }
 
-  let harkFileFn: HarkfileFunction<any, any>;
+  let harkfileRunCli: HarkfileCliFn;
   try {
-    harkFileFn = (await import(foundHarkfile)).default;
+    const harkfileModule = await import(foundHarkfile);
+    harkfileRunCli = harkfileModule.runCli;
   } catch (ex) {
     console.error(`\nError while loading harkfile at "${harkfilePath}".\n`);
     throw ex;
   }
 
-  let harkfileContext: any;
-  try {
-    harkfileContext = await harkFileFn(cliVars);
-  } catch (ex) {
-    console.error(`\nError while running default function exported from harkfile at "${harkfilePath}".\n`);
-    throw ex;
+  if (harkfileRunCli == null) {
+    throw new Error(`\nExpected "runCli" to be exported from ${harkfilePath}\n`);
+  }
+  if (typeof harkfileRunCli !== "function") {
+    throw new Error(`\nExpected "runCli" to be a function.\n`);
   }
 
-  const fullContext: T & BaseContext = {
-    stdin: process.stdin,
-    stdout: process.stdout,
-    stderr: process.stderr,
-    ...harkfileContext,
-  };
-  return cliVars.cli.run(args, fullContext);
+  let logLevel = options?.defaultLogLevel ?? 2;
+  const logLevelParts = /^\-l(\d+)$/.exec(args[0]);
+  if (logLevelParts) {
+    logLevel = parseInt(logLevelParts[1]);
+    args = args.slice(1);
+  }
+  const reporter = reporterVerbose({ logLevel });
+  return harkfileRunCli(args, { reporter });
 }
 
-export async function cliStartExit<T>(args: string[], options?: HarkCliStartOptions<T>) {
+export async function cliStartExit(args: string[], options?: HarkCliStartOptions) {
   const code = await cliStart(args, options);
+  if (typeof code !== "number") {
+    throw new Error(`Expected exit code to be numeric but got "${code}" instead.`);
+  }
   process.exit(code);
 }
 

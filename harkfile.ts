@@ -1,7 +1,7 @@
 import { makeCli } from "@hark/cli";
 import { HarkMonorepoBaseCommand, makeHarkMonorepoCommands } from "@hark/clipanion";
 import { copyPackageJson, OpinionatedProjectTaskContext, OpinionatedProjectTasks } from "@hark/opinionated";
-import { opinionatedFactory } from "@hark/opinionated/src/opinionated-factories";
+import { opinionatedFactory } from "@hark/opinionated";
 import { plugin } from "@hark/plugin";
 import copy from "@hark/plugin-copy";
 import find from "@hark/plugin-find";

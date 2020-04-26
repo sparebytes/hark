@@ -1,5 +1,6 @@
 export * from "./copy-package-json";
 export * from "./models";
+export * from "./opinionated-factories";
 export * from "./opinionated-monorepo";
 export * from "./opinionated-package";
 export * from "./opinionated-project";
